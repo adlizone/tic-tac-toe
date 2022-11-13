@@ -7,7 +7,7 @@ char player = 'X';
 char opponent = 'O';
 
 pair<int,int> findBestMove();
-int minimax(int,bool);
+int minimax(int,bool,int,int);
 int evaluate();
 void printBoard();
 bool gameOver();
@@ -78,10 +78,12 @@ pair<int, int> findBestMove(){
 				
 				Board[i][j] = player;
 				
-				int t = minimax(0,false);
+				int t = minimax(0,false, -1000, 1000);
 				
-				if(t > mx) best = {i,j};
-				mx = t;
+				if(t > mx){
+			    	best = {i,j};
+			    	mx = t;
+			    }
 				
 				Board[i][j] = '_';
 			}
@@ -92,7 +94,7 @@ pair<int, int> findBestMove(){
 }
 
 
-int minimax(int depth, bool isMax){
+int minimax(int depth, bool isMax,int alpha, int beta){
 	
 	int score = evaluate();
 	
@@ -102,7 +104,7 @@ int minimax(int depth, bool isMax){
 	
 	if(isMax){
 	
-	   int best = 1000;
+	   int best = -1000;
 	   
 	   for(int i = 1; i <= max_size; ++i){
 	   
@@ -112,14 +114,22 @@ int minimax(int depth, bool isMax){
 				
 				     Board[i][j] = player;
 					 
-					 best = max(best, minimax(depth+1, false));
+					 best = max(best, minimax(depth+1, false,alpha, beta));
+					 
+		             alpha = max(best, alpha);
 					 
 					 Board[i][j] = '_';
+					 
+					 if(beta <= alpha){
+					 	
+					 	   i = max_size+1;
+					 	   break;
+					 }
 				}
 			}
 		}
 		
-		return best;
+		return best - depth;
 	}
 	
 	else{
@@ -134,14 +144,22 @@ int minimax(int depth, bool isMax){
 					
 					Board[i][j] = opponent;
 					
-					best = min(best, minimax(depth+1, true));
+					best = min(best, minimax(depth+1, true,alpha,beta));
+					
+					beta = min(beta, best);
 					
 					Board[i][j] = '_';
+					
+					if(beta <= alpha){
+						
+						i = max_size+1;
+						break;
+					}
 				}
 			}
 		}
 		
-		return best;
+		return best + depth;
 	}
 }
 				
