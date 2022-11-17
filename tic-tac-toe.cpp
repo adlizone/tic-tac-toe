@@ -1,11 +1,12 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-const int max_size = 3;
+const int max_size = 4;
 char Board[max_size+1][max_size+1];
 char player = 'X';
 char opponent = 'O';
 
+//Function prototypes
 pair<int,int> findBestMove();
 int minimax(int,bool,int,int);
 int evaluate();
@@ -15,6 +16,8 @@ bool isMovesLeft();
 
 int main(){
 	
+	//code to initialize the cells of the board
+	//all the cells are empty when the game starts
 	for(int i = 1; i <= max_size; ++i){
 		
 		for(int j = 1; j <= max_size; ++j){
@@ -38,6 +41,7 @@ int main(){
 		
 		Board[x][y] = opponent;
 		
+		//function to clear the screen
 		system("CLS");
 		
 		printBoard();
@@ -63,7 +67,8 @@ int main(){
 	return 0;
 }
 
-
+//finds the best move for the computer(O) among all the available moves
+//this function evaluates all the available moves using minimax and returns the one with maximum value
 
 pair<int, int> findBestMove(){
 	
@@ -93,6 +98,8 @@ pair<int, int> findBestMove(){
 	return best;
 }
 
+//this function is the implementation of minimax algorithm to find the value of a move using bactracking
+//this function also incorporates alpha-beta pruning to improve efficiency
 
 int minimax(int depth, bool isMax,int alpha, int beta){
 	
@@ -162,6 +169,11 @@ int minimax(int depth, bool isMax,int alpha, int beta){
 		return best + depth;
 	}
 }
+
+//function to evaluate to board according to the rules of tic-tac-toe
+//returns 10 if computer(O) is winning
+//returns -10 if opponent(X) is winning
+//returns 0 in case of a draw
 				
 				
 int evaluate(){
