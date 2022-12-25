@@ -135,7 +135,7 @@ inline bool Game::is_moves_available() {
 
 inline bool Game::tie() {
 	
-	return is_moves_available();
+	return !is_moves_available();
 }
 
 inline char Game::get_current_winner() {
@@ -178,6 +178,12 @@ int main(){
 			cout<<cur_player<<" Won!\n";
 			break;
 		}
+        
+        if(game.tie()) {
+        	
+        	cout<<" Draw!\n";
+        	break;
+        }
         
 		if(cur_player == player1.get_letter()) {
 			
